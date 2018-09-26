@@ -23,11 +23,14 @@ server.listen(config.port, function () {
     console.log('Server listening at port %d',config.port);
 });
 
+/* Cualquier ruta */
 app.get('/', function (req, res) {
-	res.send('Hello Worl    sd!');
+	res.send('Api para estadisticas!');
 });
 
 // Routing
 //app.use('/uploads', express.static('uploads'));
+app.use(require('./modules/login'));
+app.use(require('./middlewares/auth')); // Auth Urls
+app.use(require('./modules/users'));
 app.use(require('./modules/teams'));
-//app.use(require('./modules/teams'));

@@ -5,6 +5,7 @@ var schema = new mongoose.Schema({
     name: String,
     password: String,
     email: { type: String, lowercase: true, trim: true },
+    role: { type: Schema.Types.ObjectId, ref: 'Role' },
     active: Boolean,
     deleted: { type: Boolean, default: false },
     avatar: String,
