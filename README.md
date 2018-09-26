@@ -1,4 +1,3 @@
-### STATS API
-## 
+# STATS API 
 
-# copy .env.example to .env
+### copy .env.example to .env
