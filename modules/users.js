@@ -129,21 +129,14 @@ app.put(routePrefix + '/:user_id', function(req, res) {
     User.findById(req.params.user_id, function(err, user) {
         if (err) {
             res.send(err);
-        }
+        }   
 
-        user.firstName = req.body.firstName;
-        user.lastName = req.body.lastName;
-        user.name = user.firstName + ' ' + user.lastName;
+        console.log(req.body);
+
+        user.name = req.body.name;
         user.email = req.body.email;
-        user.role = req.body.role;
-        user.nickName = req.body.nickName;
-        user.avatar = req.body.avatar;
-        user.birthday = req.body.birthday;
-        user.gender = req.body.gender;
-        user.address = req.body.address;
-        user.phone = req.body.phone;
-        user.about = req.body.about;
-        user.position = req.body.position;
+        // user.role = req.body.role;
+        // user.avatar = req.body.avatar;
         user.updatedBy = req.decoded._id;
         user.updatedAt = new Date();
 
@@ -192,7 +185,7 @@ app.delete(routePrefix + '/:user_id', function(req, res) {
  * Update User Password
  * */
 
-app.put(routePrefix + '/:user_id/update-password', function(req, res) {
+app.post(routePrefix + '/:user_id/update-password', function(req, res) {
     if (!Permissions.checkAdminPermission(req.decoded.role._id)) {
         return res.status(401).json({ success: false, message: 'User unauthorized.' });
     }
@@ -202,7 +195,11 @@ app.put(routePrefix + '/:user_id/update-password', function(req, res) {
             res.send(err);
         }
 
+        
         bcrypt.hash(req.body.password, config.saltRounds, function(err, hash) {
+            console.log(user);
+            console.log(hash);
+
             user.password = hash;
             user.updatedAt = new Date();
 
