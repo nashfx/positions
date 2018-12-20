@@ -73,7 +73,7 @@ app.post(routePrefix, function (req, res) {
                     user.address = req.body.address;
                     user.phone = req.body.phone;
                     user.createdBy = req.decoded._id;
-                    user.avatar = "http://138.197.196.64:3004/uploads/people.png";
+                    user.avatar = "http://api-falabella.blanco-estudio.com/uploads/people.png";
 
                     user.save(function (err, user) {
                         if (err) {
@@ -93,6 +93,10 @@ app.post(routePrefix, function (req, res) {
  * Get current user
  * */
 app.get(routePrefix + '/me', function(req, res) {
+    if (!Permissions.checkAdminPermission(req.decoded.role._id)) {
+        return res.status(401).json({ success: false, message: 'User unauthorized.' });
+    }
+
     User.find({ _id: req.decoded._id })
         .populate('role')
         .select('-password')
@@ -109,6 +113,10 @@ app.get(routePrefix + '/me', function(req, res) {
  * Get a user by id
  * */
 app.get(routePrefix + '/:user_id', function(req, res) {
+    if (!Permissions.checkAdminPermission(req.decoded.role._id)) {
+        return res.status(401).json({ success: false, message: 'User unauthorized.' });
+    }
+    
     User.findById(req.params.user_id, function(err, user) {
         if (err) {
             res.send(err);

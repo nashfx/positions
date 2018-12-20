@@ -12,6 +12,10 @@ var routePrefix = '/team';
  * Get Teams
  * */
 app.get(routePrefix, function (req, res) {
+    if (!Permissions.checkAdminPermission(req.decoded.role._id)) {
+        return res.status(401).json({ success: false, message: 'User unauthorized.' });
+    }
+
     var query = {};
 
     // Sort options
@@ -61,7 +65,7 @@ app.post(routePrefix, function (req, res) {
                 team.twitter = req.body.twitter;
                 team.instagram = req.body.instagram;
                 team.createdBy = req.decoded._id;
-                team.avatar = "http://138.197.196.64:3004/uploads/people.png";
+                team.avatar = "http://api-falabella.blanco-estudio.com/uploads/people.png";
 
                 team.save(function (err, team) {
                     if (err) {
@@ -74,4 +78,63 @@ app.post(routePrefix, function (req, res) {
                 return res.status(400).json({ success: false, message: 'Ya existe ese equipo.' });
             }
         });
+});
+
+/**
+ * Update team
+ * */
+app.put(routePrefix + '/:team_id', function(req, res) {
+    if (!Permissions.checkAdminPermission(req.decoded.role._id)) {
+        return res.status(401).json({ success: false, message: 'User unauthorized.' });
+    }
+
+    Team.findById(req.params.team_id, function(err, team) {
+        if (err) {
+            res.send(err);
+        }
+
+        var team = new Team();
+        team.name = req.body.name;
+        team.city = req.body.city;
+        team.stadiumName = req.body.stadiumName;
+        team.twitter = req.body.twitter;
+        team.instagram = req.body.instagram;
+        team.updatedBy = req.decoded._id;
+        team.updatedAt = new Date();
+
+        // Save team
+        team.save(function(err, team) {
+            if (err) {
+                res.send(err);
+            }
+
+            res.status(200).json(team);
+        });
+
+    });
+});
+
+/**
+ * Delete Team
+ * */
+app.delete(routePrefix + '/:team_id', function(req, res) {
+    if (!Permissions.checkAdminPermission(req.decoded.role._id)) {
+        return res.status(401).json({ success: false, message: 'User unauthorized.' });
+    }
+
+    Team.findById(req.params.team_id, function(err, team) {
+        if (err) {
+            res.send(err);
+        }
+
+        Team.remove({
+            _id: req.params.team_id
+        }, function(err, team) {
+            if (err) {
+                res.send(err);
+            }
+
+            res.status(200).json({ message: 'Successfully deleted' });
+        });
+    });
 });

@@ -1,6 +1,6 @@
 exports.port = process.env.APP_PORT || 3002;
 exports.env = process.env.ENV || 'dev';
-exports.database = 'mongodb://localhost:27017/stats';
+exports.database = 'mongodb://localhost:27017/positions';
 exports.secret = process.env.SECRET || 'sT4t$!,.fPZjoL7zGd6ec3YV-s3Mvu76Tg$JrZiXpVGkw2617WNFfPZjoLVe$@nt1';
 exports.appVersion = process.env.APP_VERSION || 1;
 exports.apiPath = '/api';
