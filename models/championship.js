@@ -13,4 +13,4 @@ var schema = new mongoose.Schema({
     updatedAt: { type: Date, default: Date.now }
 });
 schema.plugin(mongoosePaginate);
-module.exports = mongoose.model('Team', schema);
+module.exports = mongoose.model('Championship', schema);

@@ -2,7 +2,6 @@ var cors = require('cors');
 var compression = require('compression');
 var mongoose = require('mongoose');
 var config = require('./config');
-
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
@@ -25,12 +24,13 @@ server.listen(config.port, function () {
 
 /* Cualquier ruta */
 app.get('/', function (req, res) {
-	res.send('Api para estadisticas!');
+	res.send('Api para posiciones!');
 });
 
 // Routing
 //app.use('/uploads', express.static('uploads'));
 app.use(require('./modules/login'));
-app.use(require('./middlewares/auth')); // Auth Urls
+app.use(require('./middlewares/auth')); // Middleware
 app.use(require('./modules/users'));
 app.use(require('./modules/teams'));
+app.use(require('./modules/championships'));

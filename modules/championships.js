@@ -4,7 +4,7 @@ var _ = require('lodash');
 var express = require('express');
 var Championship = require('../models/championship');
 var app = module.exports = express.Router();
-
+var Permissions = require('../helpers/permissions');
 var routePrefix = '/championship';
 
 /**
@@ -14,6 +14,8 @@ app.get(routePrefix, function (req, res) {
     if (!Permissions.checkAdminPermission(req.decoded.role._id)) {
         return res.status(401).json({ success: false, message: 'User unauthorized.' });
     }
+
+    var query = {};
 
     // Sort options
     var sort = '';
@@ -34,6 +36,24 @@ app.get(routePrefix, function (req, res) {
         res.status(200).json(championships);
     });
 });
+
+/**
+ * Get championship by id
+ * */
+app.get(routePrefix + '/:championship_id', function(req, res) {
+    if (!Permissions.checkAdminPermission(req.decoded.role._id)) {
+        return res.status(401).json({ success: false, message: 'User unauthorized.' });
+    }
+    
+    Championship.findById(req.params.championship_id, function(err, championship) {
+        if (err) {
+            res.send(err);
+        }
+
+        res.json(championship.toObject());
+    });
+});
+
 
 /**
  * Create championship
