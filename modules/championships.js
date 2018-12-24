@@ -79,6 +79,7 @@ app.post(routePrefix, function (req, res) {
                 championship.name = req.body.name;
                 championship.active = true;
                 championship.year = req.body.year;
+                championship.teams: req.body.teams;
                 championship.country = req.body.country;
                 championship.type = req.body.championshipType;
                 championship.createdBy = req.decoded._id;
@@ -114,6 +115,7 @@ app.put(routePrefix + '/:championship_id', function(req, res) {
         championship.active = req.body.active;
         championship.year = req.body.year;
         championship.country = req.body.country;
+        championship.teams: req.body.teams;        
         championship.type = req.body.championshipType;
         championship.updatedBy = req.decoded._id;
         championship.updatedAt = new Date();

@@ -7,6 +7,7 @@ var schema = new mongoose.Schema({
     year: String,
     country: String,
     type: String,
+    teams: [{ type : Schema.ObjectId , ref: 'Team' }],
     createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
     createdAt: { type: Date, default: Date.now },
     updatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
